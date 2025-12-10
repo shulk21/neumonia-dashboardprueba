@@ -15,6 +15,29 @@ st.set_page_config(
 )
 
 # -------------------------------------------------------------
+# INFO DE BOX-COX (MISMOS VALORES QUE EN R)
+# -------------------------------------------------------------
+boxcox_regiones = {
+    "Total País": False,
+    "Región de Arica y Parinacota": False,
+    "Región de Tarapacá": True,
+    "Región de Antofagasta": True,
+    "Región de Atacama": True,
+    "Región de Coquimbo": True,
+    "Región de Valparaíso": False,
+    "Región Metropolitana": False,
+    "Región de O'Higgins": True,
+    "Región del Maule": True,
+    "Región de Ñuble": False,
+    "Región del Biobío": True,
+    "Región de La Araucanía": True,
+    "Región de Los Ríos": True,
+    "Región de Los Lagos": False,
+    "Región de Aysén": False,
+    "Región de Magallanes": True,
+}
+
+# -------------------------------------------------------------
 # 1. CARGA DE DATOS
 # -------------------------------------------------------------
 @st.cache_data
@@ -200,6 +223,13 @@ else:
     st.title(f"Vigilancia epidemiológica: {region_sel}")
 
 st.markdown("Monitor de atenciones de urgencia por neumonía. Red pública de salud.")
+
+# ---- Indicador de uso de Box-Cox ----
+usa_boxcox = boxcox_regiones.get(region_sel, None)
+if usa_boxcox is True:
+    st.caption("Transformación Box-Cox aplicada al modelo ARIMA de esta región.")
+elif usa_boxcox is False:
+    st.caption("Modelo ARIMA ajustado en escala original (sin transformación Box-Cox).")
 
 # -------------------------------------------------------------
 # 5. KPIs
@@ -446,6 +476,7 @@ with col_b:
         )
     else:
         st.error("No encontré el archivo 'dashboard.py' en el directorio actual.")
+
 
 
 
